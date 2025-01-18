@@ -1,0 +1,7 @@
+path: data/datasets/pp4av
+train: images/train
+val: images/val
+
+names:
+  0: face
+  1: license_plate
