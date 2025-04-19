@@ -1,0 +1,8 @@
+# path: /content/pp4av/
+path: /Users/clarkhu/Downloads/avd_exp/yolov11/pp4av/
+train: images/train
+val: images/val
+
+names:
+  0: face
+  1: license_plate
