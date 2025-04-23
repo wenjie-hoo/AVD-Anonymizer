@@ -1,17 +1,20 @@
 from ultralytics import YOLO
 
-# Initialize model (from scratch)
-model = YOLO("./yolo11s.pt")  # You can use "yolov8s.yaml" or another config
 
-# Train the model
+model = YOLO("./yolo11s.pt")
+
 model.train(
-    data="pp4av.yaml",  # Path to your dataset config
+    data="pp4av.yaml",
     epochs=100,
     imgsz=640,
-    batch=16,  # Adjust based on your GPU memory
-    device="cpu",  # Use "cpu" if you don't have a GPU
+    batch=16,
+    device="0",
     workers=8,
-    optimizer="SGD",  # Try "AdamW" for better results
-    lr0=0.01,  # Initial learning rate
+    optimizer="SGD",
+    lr0=0.01,
     weight_decay=0.0005,
+    name="yolov11s_finetuned",
 )
+
+metrics = model.val(data="pp4av.yaml")
+print(metrics)
