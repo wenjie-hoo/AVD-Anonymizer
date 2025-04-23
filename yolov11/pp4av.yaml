@@ -1,7 +1,5 @@
-# path: /content/pp4av/
-path: /Users/clarkhu/Downloads/avd_exp/yolov11/pp4av/
-train: images/train
-val: images/val
+train: ../pp4av_dataset/images/train
+val: ../pp4av_dataset/images/val
 
 names:
   0: face

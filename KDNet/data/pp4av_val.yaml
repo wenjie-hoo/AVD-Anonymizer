@@ -1,5 +1,5 @@
-train: data/pp4av/images/train
-val: data/pp4av/images/val
+train: ../pp4av_dataset/images/train
+val: ../pp4av_dataset/images/val
 nc: 2
 names: [ 'face', 'license_plate']
 
