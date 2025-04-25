@@ -43,8 +43,8 @@ Evaluation metrics include:
 | yolov11m       |     20.0      |   0.81    |  0.60  |  0.71   |     0.42     |         4.2         |
 | yolov11l       |     25.3      |   0.79    |  0.61  |  0.70   |     0.42     |         4.9         |
 | yolov11x       |     56.8      |   0.81    |  0.60  |  0.71   |     0.43     |         8.4         |
-| KDNet          |     38.4      |   0.62    |  0.45  |  0.48   |     0.26     |         4.0         |
-| yolov7         |     36.4      |   0.76    |  0.33  |  0.37   |     0.21     |         2.6         |
+| KDNet          |     38.4      |   0.60    |  0.49  |  0.49   |     0.27     |         4.0         |
+| yolov7         |     36.4      |   0.76    |  0.33  |  0.37   |     0.21     |         2.5         |
 | detr-resnet-50 |     41.3      |   0.51    |  0.70  |  0.51   |     0.22     |         0.0         |
 ## Dataset
 [PP4AV](https://github.com/khaclinh/pp4av) dataset: A collection of images and videos captured in various urban environments, annotated with bounding boxes for pedestrians, cyclists, and vehicles. The dataset is designed to facilitate the training and evaluation of visual anonymization algorithms.
