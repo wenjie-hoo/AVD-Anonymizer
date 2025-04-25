@@ -2,4 +2,5 @@
 /yolov5/runs/
 /yolov11/runs/
 /KDNet/runs/
-
+KDNet/utils/__pycache__/
+KDNet/models/__pycache__/

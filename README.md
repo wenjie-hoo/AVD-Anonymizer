@@ -33,18 +33,19 @@ Evaluation metrics include:
 
 | Model          | Parameters(M) | Precision | Recall | mAP@0.5 | mAP@0.5:0.95 | Inference Time (ms) |
 | :------------- | :-----------: | :-------: | :----: | :-----: | :----------: | :-----------------: |
-| yoloV5n        |     1.76      |   0.81    |  0.65  |  0.70   |     0.38     |         1.5         |
-| yoloV5s        |     7.01      |   0.86    |  0.70  |  0.77   |     0.43     |         2.6         |
-| yoloV5m        |     20.8      |   0.86    |  0.75  |  0.80   |     0.46     |         3.1         |
-| yoloV5l        |     46.1      |   0.87    |  0.77  |  0.82   |     0.47     |         4.6         |
-| yoloV5x        |     86.1      |   0.88    |  0.77  |  0.83   |     0.48     |         7.2         |
+| yolov5n        |     1.76      |   0.81    |  0.65  |  0.70   |     0.38     |         1.5         |
+| yolov5s        |     7.01      |   0.86    |  0.70  |  0.77   |     0.43     |         2.6         |
+| yolov5m        |     20.8      |   0.86    |  0.75  |  0.80   |     0.46     |         3.1         |
+| yolov5l        |     46.1      |   0.87    |  0.77  |  0.82   |     0.47     |         4.6         |
+| yolov5x        |     86.1      |   0.88    |  0.77  |  0.83   |     0.48     |         7.2         |
 | yolov11n       |     2.58      |   0.74    |  0.56  |  0.61   |     0.35     |         1.8         |
 | yolov11s       |     9.41      |   0.79    |  0.57  |  0.66   |     0.39     |         2.7         |
 | yolov11m       |     20.0      |   0.81    |  0.60  |  0.71   |     0.42     |         4.2         |
 | yolov11l       |     25.3      |   0.79    |  0.61  |  0.70   |     0.42     |         4.9         |
 | yolov11x       |     56.8      |   0.81    |  0.60  |  0.71   |     0.43     |         8.4         |
-| KDNet          |     38.8      |   0.59    |  0.32  |  0.35   |     0.18     |         4.0         |
-| detr-resnet-50 |     41.3      |   0.00    |  0.00  |  0.00   |     0.00     |         0.0         |
+| KDNet          |     38.4      |   0.62    |  0.45  |  0.48   |     0.26     |         4.0         |
+| yolov7         |     36.4      |   0.76    |  0.33  |  0.37   |     0.21     |         2.6         |
+| detr-resnet-50 |     41.3      |   0.51    |  0.70  |  0.51   |     0.22     |         0.0         |
 ## Dataset
 [PP4AV](https://github.com/khaclinh/pp4av) dataset: A collection of images and videos captured in various urban environments, annotated with bounding boxes for pedestrians, cyclists, and vehicles. The dataset is designed to facilitate the training and evaluation of visual anonymization algorithms.
 
