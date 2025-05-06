@@ -29,7 +29,7 @@ Evaluation metrics include:
 - Inference time per frame
 
 ## Baseline model and performance
-### Model Evaluation Comparison Table
+### Model Evaluation Results
 
 | Model          | Parameters(M) | Precision | Recall | mAP@0.5 | mAP@0.5:0.95 | Inference Time (ms) |
 | :------------- | :-----------: | :-------: | :----: | :-----: | :----------: | :-----------------: |
@@ -46,6 +46,16 @@ Evaluation metrics include:
 | KDNet          |     38.4      |   0.60    |  0.49  |  0.49   |     0.27     |         3.3         |
 | yolov7         |     36.4      |   0.76    |  0.33  |  0.37   |     0.21     |         3.7         |
 | detr-resnet-50 |     41.3      |   0.51    |  0.70  |  0.51   |     0.22     |         0.0         |
+
+
+
+
+| Method  | $AP$  | $AP_{50}$ | $AP_{75}$ | $AP_S$ | $AP_M$ | $AP_L$ |
+| ------- | ----- | --------- | --------- | ------ | ------ | ------ |
+| FCOS    | 0.403 | 0.774     | 0.368     | 0.382  | 0.558  | 0.450  |
+| CrossKD | 0.445 | 0.814     | 0.411     | 0.417  | 0.610  | 0.500  |
+
+
 ## Dataset
 [PP4AV](https://github.com/khaclinh/pp4av) dataset: A collection of images and videos captured in various urban environments, annotated with bounding boxes for pedestrians, cyclists, and vehicles. The dataset is designed to facilitate the training and evaluation of visual anonymization algorithms.
 
