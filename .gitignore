@@ -4,3 +4,128 @@
 /KDNet/runs/
 KDNet/utils/__pycache__/
 KDNet/models/__pycache__/
+._*
+/KDNet/models/__pycache__/
+*pyc
+# Byte-compiled / optimized / DLL files
+/CrossKD/__pycache__/
+/CrossKD/*.py[cod]
+/CrossKD/*$py.class
+
+# C extensions
+/CrossKD/*.so
+
+# Distribution / packaging
+/CrossKD/.Python
+/CrossKD/build/
+/CrossKD/develop-eggs/
+/CrossKD/dist/
+/CrossKD/downloads/
+/CrossKD/eggs/
+/CrossKD/.eggs/
+/CrossKD/lib/
+/CrossKD/lib64/
+/CrossKD/parts/
+/CrossKD/sdist/
+/CrossKD/var/
+/CrossKD/wheels/
+/CrossKD/*.egg-info/
+/CrossKD/.installed.cfg
+/CrossKD/*.egg
+/CrossKD/MANIFEST
+
+# PyInstaller
+/CrossKD/*.manifest
+/CrossKD/*.spec
+
+# Installer logs
+/CrossKD/pip-log.txt
+/CrossKD/pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+/CrossKD/htmlcov/
+/CrossKD/.tox/
+/CrossKD/.coverage
+/CrossKD/.coverage.*
+/CrossKD/.cache
+/CrossKD/nosetests.xml
+/CrossKD/coverage.xml
+/CrossKD/*.cover
+/CrossKD/.hypothesis/
+/CrossKD/.pytest_cache/
+
+# Translations
+/CrossKD/*.mo
+/CrossKD/*.pot
+
+# Django stuff:
+/CrossKD/*.log
+/CrossKD/local_settings.py
+/CrossKD/db.sqlite3
+
+# Flask stuff:
+/CrossKD/instance/
+/CrossKD/.webassets-cache
+
+# Scrapy stuff:
+/CrossKD/.scrapy
+
+# Sphinx documentation
+/CrossKD/docs/en/_build/
+/CrossKD/docs/zh_cn/_build/
+
+# PyBuilder
+/CrossKD/target/
+
+# Jupyter Notebook
+/CrossKD/.ipynb_checkpoints
+
+# pyenv
+/CrossKD/.python-version
+
+# celery beat schedule file
+/CrossKD/celerybeat-schedule
+
+# SageMath parsed files
+/CrossKD/*.sage.py
+
+# Environments
+/CrossKD/.env
+/CrossKD/.venv
+/CrossKD/env/
+/CrossKD/venv/
+/CrossKD/ENV/
+/CrossKD/env.bak/
+/CrossKD/venv.bak/
+
+# Spyder project settings
+/CrossKD/.spyderproject
+/CrossKD/.spyproject
+
+# Rope project settings
+/CrossKD/.ropeproject
+
+# mkdocs documentation
+/CrossKD//site
+
+# mypy
+/CrossKD/.mypy_cache/
+/CrossKD/data/
+/CrossKD/data
+/CrossKD/.vscode
+/CrossKD/.idea
+/CrossKD/.DS_Store
+
+# custom
+/CrossKD/*.pkl
+/CrossKD/*.pkl.json
+/CrossKD/*.log.json
+/CrossKD/docs/modelzoo_statistics.md
+/CrossKD/mmdet/.mim
+/CrossKD/work_dirs/
+
+# Pytorch
+/CrossKD/*.pth
+/CrossKD/*.py~
+/CrossKD/*.sh~
+
