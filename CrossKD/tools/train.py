@@ -3,7 +3,12 @@ import argparse
 import logging
 import os
 import os.path as osp
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+# from mmdet.models.detectors.crosskd_single_stage import CrossKDSingleStageDetector
+# from mmdet.models.detectors.crosskd_fcos import CrossKDFCOS
+from mmengine.registry import MODELS
 from mmengine.config import Config, DictAction
 from mmengine.logging import print_log
 from mmengine.registry import RUNNERS
