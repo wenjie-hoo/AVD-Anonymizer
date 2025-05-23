@@ -2,8 +2,8 @@ _base_ = [
     '../_base_/datasets/pp4av_dataset.py',
     '../_base_/schedules/schedule_1x.py', '../_base_/default_runtime.py'
 ]
-teacher_ckpt = 'https://download.openmmlab.com/mmdetection/v2.0/gfl/gfl_r101_fpn_mstrain_2x_coco/gfl_r101_fpn_mstrain_2x_coco_20200629_200126-dd12f847.pth'  # noqa
-# teacher_ckpt = '/Ziob/343312/CrossKD/work_dirs/fcos_r50-caffe_fpn_gn-head_1x_coco/epoch_36.pth'
+# teacher_ckpt = 'https://download.openmmlab.com/mmdetection/v2.0/gfl/gfl_r101_fpn_mstrain_2x_coco/gfl_r101_fpn_mstrain_2x_coco_20200629_200126-dd12f847.pth'  # noqa
+teacher_ckpt = 'work_dirs/fcos_r50-caffe_fpn_gn-head_2x_coco/epoch_24.pth'
 
 model = dict(
     type='KnowledgeDistillationSingleStageDetector',
@@ -13,8 +13,7 @@ model = dict(
         std=[58.395, 57.12, 57.375],
         bgr_to_rgb=True,
         pad_size_divisor=32),
-    teacher_config='configs/gfl/gfl_r101_fpn_ms-2x_coco.py',
-    # teacher_config = '/Ziob/343312/CrossKD/configs/fcos/fcos_r101-caffe_fpn_gn-head_ms-640-800-2x_coco.py',
+    teacher_config='configs/gfl/gfl_r50_fpn_1x_coco.py',
 
     teacher_ckpt=teacher_ckpt,
     backbone=dict(
@@ -30,6 +29,7 @@ model = dict(
     neck=dict(
         type='FPN',
         in_channels=[64, 128, 256, 512],
+#         in_channels = [256, 512, 1024, 2048],
         out_channels=256,
         start_level=1,
         add_extra_convs='on_output',
@@ -45,7 +45,8 @@ model = dict(
             ratios=[1.0],
             octave_base_scale=8,
             scales_per_octave=1,
-            strides=[8, 16, 32, 64, 128]),
+#             strides=[8, 16, 32, 64, 128]),
+            strides=[4, 8, 16, 32, 64]),
         loss_cls=dict(
             type='QualityFocalLoss',
             use_sigmoid=True,

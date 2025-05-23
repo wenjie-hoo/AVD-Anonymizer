@@ -1,6 +1,6 @@
 _base_ = [
-    '../_base_/datasets/coco_detection.py',
-    '../_base_/schedules/schedule_1x.py', '../_base_/default_runtime.py'
+    '../_base_/datasets/pp4av_dataset.py',
+    '../_base_/schedules/schedule_2x.py', '../_base_/default_runtime.py'
 ]
 model = dict(
     type='GFL',
@@ -24,12 +24,12 @@ model = dict(
         type='FPN',
         in_channels=[256, 512, 1024, 2048],
         out_channels=256,
-        start_level=1,
+        start_level=0,
         add_extra_convs='on_output',
         num_outs=5),
     bbox_head=dict(
         type='GFLHead',
-        num_classes=80,
+        num_classes=2,
         in_channels=256,
         stacked_convs=4,
         feat_channels=256,
@@ -57,7 +57,7 @@ model = dict(
         nms_pre=1000,
         min_bbox_size=0,
         score_thr=0.05,
-        nms=dict(type='nms', iou_threshold=0.6),
+        nms=dict(type='nms', iou_threshold=0.5),
         max_per_img=100))
 
 # optimizer

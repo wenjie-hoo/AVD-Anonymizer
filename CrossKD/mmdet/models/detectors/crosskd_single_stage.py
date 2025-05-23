@@ -18,7 +18,7 @@ from ..utils import images_to_levels, multi_apply, unpack_gt_instances
 from .single_stage import SingleStageDetector
 
 
-@MODELS.register_module()
+@MODELS.register_module() 
 class CrossKDSingleStageDetector(SingleStageDetector):
     r"""Implementation of `Distilling the Knowledge in a Neural Network.
     <https://arxiv.org/abs/1503.02531>`_.

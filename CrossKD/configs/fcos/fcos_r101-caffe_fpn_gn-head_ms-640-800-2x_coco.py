@@ -16,7 +16,7 @@ train_pipeline = [
     dict(type='LoadAnnotations', with_bbox=True),
     dict(
         type='RandomChoiceResize',
-        scale=[(1333, 640), (1333, 800)],
+        scales=[(1333, 640), (1333, 800)],
         keep_ratio=True),
     dict(type='RandomFlip', prob=0.5),
     dict(type='PackDetInputs')
@@ -24,7 +24,7 @@ train_pipeline = [
 train_dataloader = dict(dataset=dict(pipeline=train_pipeline))
 
 # training schedule for 2x
-max_epochs = 36
+max_epochs = 24
 train_cfg = dict(max_epochs=max_epochs)
 
 # learning rate

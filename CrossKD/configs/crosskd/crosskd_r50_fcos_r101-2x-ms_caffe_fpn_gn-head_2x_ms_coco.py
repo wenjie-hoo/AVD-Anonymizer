@@ -1,6 +1,6 @@
 _base_ = [
     '../_base_/datasets/pp4av_dataset.py',
-    '../_base_/schedules/schedule_1x.py', 
+    '../_base_/schedules/schedule_2x.py', 
     '../_base_/default_runtime.py'
 ]
 
@@ -11,14 +11,14 @@ data_preprocessor = dict(type='DetDataPreprocessor',
                          pad_size_divisor=32)
 
 # teacher_ckpt = 'https://download.openmmlab.com/mmdetection/v2.0/fcos/fcos_r101_caffe_fpn_gn-head_mstrain_640-800_2x_coco/fcos_r101_caffe_fpn_gn-head_mstrain_640-800_2x_coco-511424d6.pth'
-# teacher_ckpt = 'work_dirs/fcos_r50-caffe_fpn_gn-head_1x_coco/epoch_36.pth'
-teacher_ckpt = '/Ziob/343312/CrossKD/work_dirs/fcos_r50-caffe_fpn_gn-head_1x_coco/epoch_36.pth'
+teacher_ckpt = 'work_dirs/fcos_r50-caffe_fpn_gn-head_2x_coco/epoch_24.pth'
+
 
 model = dict(
     type='CrossKDFCOS',
     data_preprocessor=data_preprocessor,
-    # teacher_config='configs/fcos/fcos_r101-caffe_fpn_gn-head_ms-640-800-2x_coco.py',
-    teacher_config = '/Ziob/343312/CrossKD/configs/fcos/fcos_r101-caffe_fpn_gn-head_ms-640-800-2x_coco.py',
+    teacher_config='configs/fcos/fcos_r50-caffe_fpn_gn-head_2x_coco.py',
+    # teacher_config = '/Ziob/343312/AVD-Anonymizer/CrossKD/configs/fcos/fcos_r101-caffe_fpn_gn-head_ms-640-800-2x_coco.py',
 
     teacher_ckpt=teacher_ckpt,
     backbone=dict(
