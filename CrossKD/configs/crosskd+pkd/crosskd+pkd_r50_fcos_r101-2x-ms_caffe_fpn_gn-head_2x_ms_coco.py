@@ -1,6 +1,6 @@
 _base_ = [
     '../_base_/datasets/pp4av_dataset.py',
-    '../_base_/schedules/schedule_1x.py', 
+    '../_base_/schedules/schedule_2x.py', 
     '../_base_/default_runtime.py'
 ]
 
@@ -10,11 +10,13 @@ data_preprocessor = dict(type='DetDataPreprocessor',
                          bgr_to_rgb=False,
                          pad_size_divisor=32)
 
-teacher_ckpt = 'https://download.openmmlab.com/mmdetection/v2.0/fcos/fcos_r101_caffe_fpn_gn-head_mstrain_640-800_2x_coco/fcos_r101_caffe_fpn_gn-head_mstrain_640-800_2x_coco-511424d6.pth'
+# teacher_ckpt = 'https://download.openmmlab.com/mmdetection/v2.0/fcos/fcos_r101_caffe_fpn_gn-head_mstrain_640-800_2x_coco/fcos_r101_caffe_fpn_gn-head_mstrain_640-800_2x_coco-511424d6.pth'
+teacher_ckpt = 'work_dirs/fcos_r50-caffe_fpn_gn-head_2x_coco/epoch_24.pth'
 model = dict(
     type='CrossKDFCOS',
     data_preprocessor=data_preprocessor,
-    teacher_config='configs/fcos/fcos_r101-caffe_fpn_gn-head_ms-640-800-2x_coco.py',
+#     teacher_config='configs/fcos/fcos_r101-caffe_fpn_gn-head_ms-640-800-2x_coco.py',
+    teacher_config='configs/fcos/fcos_r50-caffe_fpn_gn-head_2x_coco.py',
     teacher_ckpt=teacher_ckpt,
     backbone=dict(
         type='ResNet',
@@ -32,7 +34,8 @@ model = dict(
         type='FPN',
         in_channels=[256, 512, 1024, 2048],
         out_channels=256,
-        start_level=1,
+#         start_level=1,
+        start_level=0,
         add_extra_convs='on_output',
         num_outs=5,
         relu_before_extra_convs=True),
@@ -42,19 +45,22 @@ model = dict(
         in_channels=256,
         stacked_convs=4,
         feat_channels=256,
-        strides=[8, 16, 32, 64, 128],
+#         strides=[8, 16, 32, 64, 128],
+        strides=[4, 8, 16, 32, 64],
         loss_cls=dict(
             type='FocalLoss',
             use_sigmoid=True,
             gamma=2.0,
             alpha=0.25,
             loss_weight=1.0),
-        loss_bbox=dict(type='IoULoss', loss_weight=1.0),
+#         loss_bbox=dict(type='IoULoss', loss_weight=1.0),
+        loss_bbox=dict(type='GIoULoss', loss_weight=2.0),
         loss_centerness=dict(
             type='CrossEntropyLoss', use_sigmoid=True, loss_weight=1.0)),
     kd_cfg=dict(
         loss_cls_kd=dict(type='KDQualityFocalLoss', beta=1, loss_weight=0.4),
-        loss_reg_kd=dict(type='IoULoss', loss_weight=0.75),
+#         loss_reg_kd=dict(type='IoULoss', loss_weight=0.75),
+        loss_reg_kd=dict(type='GIoULoss', loss_weight=1.5),
         loss_feat_kd=dict(type='PKDLoss', loss_weight=2),
         reused_teacher_head_idx=2),
     test_cfg=dict(
@@ -79,8 +85,8 @@ train_pipeline = [
     dict(type='PackDetInputs')
 ]
 train_dataloader = dict(dataset=dict(pipeline=train_pipeline),
-                        batch_size=2, 
-                        num_workers=4)
+                        batch_size=4, 
+                        num_workers=2)
 
 # optimizer
 optim_wrapper = dict(
@@ -96,12 +102,14 @@ auto_scale_lr = dict(enable=True, base_batch_size=16)
 
 # learning rate
 param_scheduler = [
-    dict(
-        type='ConstantLR',
-        factor=0.3333333333333333,
-        by_epoch=False,
-        begin=0,
-        end=500),
+#     dict(
+#         type='ConstantLR',
+#         factor=0.3333333333333333,
+#         by_epoch=False,
+#         begin=0,
+#         end=500),
+    dict(type='LinearLR', start_factor=0.1, by_epoch=False, begin=0, end=500),
+
     dict(
         type='MultiStepLR',
         begin=0,
