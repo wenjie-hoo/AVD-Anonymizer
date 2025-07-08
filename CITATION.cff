@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "AVD-Anonymizer"
+version: "1.0.0"
+date-released: 2025-07-08
+authors:
+  - family-names: Hu
+    given-names: Wenjie
+repository-code: https://github.com/wenjie-hoo/AVD-Anonymizer
