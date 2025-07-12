@@ -102,13 +102,13 @@ auto_scale_lr = dict(enable=True, base_batch_size=16)
 
 # learning rate
 param_scheduler = [
-    # dict(
-    #     type='ConstantLR',
-    #     factor=0.3333333333333333,
-    #     by_epoch=False,
-    #     begin=0,
-    #     end=500),
-    dict(type='LinearLR', start_factor=0.1, by_epoch=False, begin=0, end=500),
+    dict(
+        type='ConstantLR',
+        factor=0.3333333333333333,
+        by_epoch=False,
+        begin=0,
+        end=500),
+#     dict(type='LinearLR', start_factor=0.1, by_epoch=False, begin=0, end=500),
     dict(
         type='MultiStepLR',
         begin=0,

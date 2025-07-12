@@ -55,13 +55,13 @@ model = dict(
             alpha=0.25,
             loss_weight=1.0),
         # loss_bbox=dict(type='IoULoss', loss_weight=1.0),
-        loss_bbox=dict(type='GIoULoss', loss_weight=1.0),
+        loss_bbox=dict(type='GIoULoss', loss_weight=2.0),
         loss_centerness=dict(
             type='CrossEntropyLoss', use_sigmoid=True, loss_weight=1.0)),
     kd_cfg=dict(
-        loss_cls_kd=dict(type='KDQualityFocalLoss', beta=1, loss_weight=0.4),
+        loss_cls_kd=dict(type='KDQualityFocalLoss', beta=1, loss_weight=0.5),
         # loss_reg_kd=dict(type='IoULoss', loss_weight=0.75),
-        loss_reg_kd=dict(type='GIoULoss', loss_weight=1),
+        loss_reg_kd=dict(type='GIoULoss', loss_weight=1.0),
         reused_teacher_head_idx=2),
     test_cfg=dict(
         nms_pre=1000,
@@ -86,14 +86,9 @@ train_pipeline = [
     dict(type='PackDetInputs')
 ]
 train_dataloader = dict(dataset=dict(pipeline=train_pipeline),
-                        batch_size=4, 
+                        batch_size=8, 
                         num_workers=2)
 
-# optimizer
-optim_wrapper = dict(
-    optimizer=dict(lr=0.01),
-    paramwise_cfg=dict(bias_lr_mult=2., bias_decay_mult=0.),
-    clip_grad=dict(max_norm=35, norm_type=2))
 
 max_epochs = 24
 train_cfg = dict(type='EpochBasedTrainLoop', max_epochs=max_epochs, val_interval=1)
@@ -102,18 +97,19 @@ auto_scale_lr = dict(enable=True, base_batch_size=16)
 
 # learning rate
 param_scheduler = [
-    # dict(
-    #     type='ConstantLR',
-    #     factor=0.3333333333333333,
-    #     by_epoch=False,
-    #     begin=0,
-    #     end=500),
-    dict(type='LinearLR', start_factor=0.1, by_epoch=False, begin=0, end=500),
+    dict(type='ConstantLR', factor=1.0 / 3, by_epoch=False, begin=0, end=500),
+#     dict(type='LinearLR', start_factor=0.1, by_epoch=False, begin=0, end=500),
     dict(
         type='MultiStepLR',
         begin=0,
         end=12,
         by_epoch=True,
-        milestones=[16, 22],
+        milestones=[8, 11],
         gamma=0.1)
 ]
+
+# optimizer
+optim_wrapper = dict(
+    optimizer=dict(lr=0.01),
+    paramwise_cfg=dict(bias_lr_mult=2., bias_decay_mult=0.),
+    clip_grad=dict(max_norm=35, norm_type=2))

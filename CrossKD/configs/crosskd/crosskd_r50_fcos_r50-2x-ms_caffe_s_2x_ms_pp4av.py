@@ -10,7 +10,7 @@ data_preprocessor = dict(type='DetDataPreprocessor',
                          bgr_to_rgb=False,
                          pad_size_divisor=32)
 
-teacher_ckpt = 'work_dirs/fcos_r50-caffe_fpn_s_2x_pp4av/epoch_24.pth'
+teacher_ckpt = 'work_dirs/fcos_r50-caffe_fpn_s_2x_pp4av_0107/epoch_24.pth'
 
 train_pipeline = [
     dict(type='LoadImageFromFile', file_client_args=dict(backend='disk')),
@@ -33,7 +33,7 @@ train_dataloader = dict(
 model = dict(
     type='CrossKDFCOS',
     data_preprocessor=data_preprocessor,
-    teacher_config='configs/fcos/fcos_r50-caffe_fpn_s_2x_pp4av.py',
+    teacher_config='configs/fcos/fcos_r50-caffe_2x_pp4av.py',
     teacher_ckpt=teacher_ckpt,
     backbone=dict(
         type='ResNet',

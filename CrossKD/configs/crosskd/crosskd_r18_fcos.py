@@ -55,7 +55,7 @@ model = dict(
             type='CrossEntropyLoss', use_sigmoid=True, loss_weight=1.0)),
     kd_cfg=dict(
         loss_cls_kd=dict(type='KDQualityFocalLoss', beta=1, loss_weight=0.4),
-        loss_reg_kd=dict(type='GIoULoss', loss_weight=1.5),
+        loss_reg_kd=dict(type='GIoULoss', loss_weight=1.0),
         reused_teacher_head_idx=2),  # Now safe to use
     test_cfg=dict(
         nms_pre=1000,
@@ -80,8 +80,8 @@ train_pipeline = [
 
 train_dataloader = dict(
     dataset=dict(pipeline=train_pipeline),
-    batch_size=6,  # Increase batch size due to smaller backbone
-    num_workers=4)
+    batch_size=4,  # Increase batch size due to smaller backbone
+    num_workers=2)
 
 # Optimizer
 optim_wrapper = dict(
