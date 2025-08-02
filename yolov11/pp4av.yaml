@@ -1,6 +1,0 @@
-train: ../pp4av_dataset/images/train
-val: ../pp4av_dataset/images/val
-
-names:
-  0: face
-  1: license_plate
