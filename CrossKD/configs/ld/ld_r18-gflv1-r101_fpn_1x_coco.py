@@ -2,8 +2,8 @@ _base_ = [
     '../_base_/datasets/pp4av_dataset.py',
     '../_base_/schedules/schedule_2x.py', '../_base_/default_runtime.py'
 ]
-teacher_ckpt = 'work_dirs/fcos_r50-caffe_fpn_gn-head_2x_coco/epoch_24.pth'
-
+# teacher_ckpt = 'work_dirs/fcos_r50-caffe_fpn_gn-head_2x_coco/epoch_24.pth'
+teacher_ckpt = 'work_dirs/fcos_r101-caffe_fpn_gn-head-1x_coco/exp_1/epoch_24.pth'
 model = dict(
     type='KnowledgeDistillationSingleStageDetector',
     data_preprocessor=dict(
@@ -13,18 +13,19 @@ model = dict(
         bgr_to_rgb=True,
         pad_size_divisor=32),
     teacher_config='configs/gfl/gfl_r50_fpn_1x_coco.py',
+#     teacher_config='configs/fcos/fcos_r101-caffe_fpn_gn-head-1x_coco.py',
 
     teacher_ckpt=teacher_ckpt,
     backbone=dict(
         type='ResNet',
-        depth=50,
+        depth=18,
         num_stages=4,
         out_indices=(0, 1, 2, 3),
         frozen_stages=1,
         norm_cfg=dict(type='BN', requires_grad=True),
         norm_eval=True,
         style='pytorch',
-        init_cfg=dict(type='Pretrained', checkpoint='torchvision://resnet50')),
+        init_cfg=dict(type='Pretrained', checkpoint='torchvision://resnet18')),
     neck=dict(
         type='FPN',
         in_channels=[64, 128, 256, 512],

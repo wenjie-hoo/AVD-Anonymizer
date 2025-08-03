@@ -40,8 +40,7 @@ model = dict(
         in_channels=256,
         stacked_convs=4,
         feat_channels=256,
-        # strides=[8, 16, 32, 64, 128],
-        strides=[4, 8, 16, 32, 64],
+        strides=[8, 16, 32, 64, 128],
         loss_cls=dict(
             type='FocalLoss',
             use_sigmoid=True,
@@ -49,7 +48,7 @@ model = dict(
             alpha=0.25,
             loss_weight=1.0),
         # loss_bbox=dict(type='IoULoss', loss_weight=1.0),
-        loss_bbox=dict(type='GIoULoss', loss_weight=1.0),
+        loss_bbox=dict(type='GIoULoss', loss_weight=2.0),
         loss_centerness=dict(
             type='CrossEntropyLoss', use_sigmoid=True, loss_weight=1.0)),
     # testing settings

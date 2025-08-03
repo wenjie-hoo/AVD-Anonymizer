@@ -2,16 +2,20 @@ _base_ = [
     '../_base_/datasets/pp4av_dataset.py',
     '../_base_/schedules/schedule_2x.py', '../_base_/default_runtime.py'
 ]
-
-# model settings
+# teacher_ckpt = 'work_dirs/fcos_r50-caffe_fpn_gn-head_2x_coco/epoch_24.pth'
+teacher_ckpt = 'work_dirs/fcos_r101-caffe_fpn_gn-head-1x_coco/epoch_24.pth'
 model = dict(
-    type='ATSS',
+    type='KnowledgeDistillationSingleStageDetector',
     data_preprocessor=dict(
         type='DetDataPreprocessor',
         mean=[123.675, 116.28, 103.53],
         std=[58.395, 57.12, 57.375],
         bgr_to_rgb=True,
         pad_size_divisor=32),
+    teacher_config='configs/gfl/gfl_r50_fpn_1x_coco.py',
+#     teacher_config='configs/fcos/fcos_r101-caffe_fpn_gn-head-1x_coco.py',
+
+    teacher_ckpt=teacher_ckpt,
     backbone=dict(
         type='ResNet',
         depth=50,
@@ -25,13 +29,12 @@ model = dict(
     neck=dict(
         type='FPN',
         in_channels=[256, 512, 1024, 2048],
-#         in_channels=[64, 128, 256, 512],
         out_channels=256,
-        start_level=1,
+        start_level=0,
         add_extra_convs='on_output',
         num_outs=5),
     bbox_head=dict(
-        type='ATSSHead',
+        type='LDHead',
         num_classes=2,
         in_channels=256,
         stacked_convs=4,
@@ -43,19 +46,22 @@ model = dict(
             scales_per_octave=1,
 #             strides=[8, 16, 32, 64, 128]),
             strides=[4, 8, 16, 32, 64]),
-        bbox_coder=dict(
-            type='DeltaXYWHBBoxCoder',
-            target_means=[.0, .0, .0, .0],
-            target_stds=[0.1, 0.1, 0.2, 0.2]),
         loss_cls=dict(
-            type='FocalLoss',
-            use_sigmoid=True,
-            gamma=2.0,
-            alpha=0.25,
-            loss_weight=1.0),
-        loss_bbox=dict(type='GIoULoss', loss_weight=2.0),
-        loss_centerness=dict(
-            type='CrossEntropyLoss', use_sigmoid=True, loss_weight=1.0)),
+            type='UncertaintyWeightedKDLoss',
+            kd_weight=1.0,
+            tau=10,
+            reduction='mean',
+            uncertainty_mode='entropy'),
+#         loss_cls=dict(
+#             type='QualityFocalLoss',
+#             use_sigmoid=True,
+#             beta=2.0,
+#             loss_weight=1.0),
+        loss_dfl=dict(type='DistributionFocalLoss', loss_weight=0.25),
+        loss_ld=dict(
+            type='KnowledgeDistillationKLDivLoss', loss_weight=0.25, T=10),
+        reg_max=16,
+        loss_bbox=dict(type='GIoULoss', loss_weight=2.0)),
     # training and testing settings
     train_cfg=dict(
         assigner=dict(type='ATSSAssigner', topk=9),
@@ -68,6 +74,7 @@ model = dict(
         score_thr=0.05,
         nms=dict(type='nms', iou_threshold=0.5),
         max_per_img=100))
-# optimizer
+
 optim_wrapper = dict(
+    type='OptimWrapper',
     optimizer=dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001))

@@ -4,7 +4,7 @@ _base_ = [
     '../_base_/default_runtime.py'
 ]
 
-# model settings
+
 model = dict(
     type='FCOS',
 
@@ -16,7 +16,7 @@ model = dict(
         pad_size_divisor=32),
     backbone=dict(
         type='ResNet',
-        depth=50,
+        depth=101,
         num_stages=4,
         out_indices=(0, 1, 2, 3),
         frozen_stages=1,
@@ -26,7 +26,7 @@ model = dict(
         style='caffe',
         init_cfg=dict(
             type='Pretrained',
-            checkpoint='open-mmlab://detectron/resnet50_caffe')),
+            checkpoint='open-mmlab://detectron/resnet101_caffe')),
     neck=dict(
         type='FPN',
         in_channels=[256, 512, 1024, 2048],
@@ -43,12 +43,19 @@ model = dict(
         feat_channels=256,
         # strides=[8, 16, 32, 64, 128],
         strides=[4, 8, 16, 32, 64],
+#         loss_cls=dict(
+#             type='FocalLoss',
+#             use_sigmoid=True,
+#             gamma=2.0,
+#             alpha=0.25,
+#             loss_weight=1.0),
         loss_cls=dict(
-            type='FocalLoss',
-            use_sigmoid=True,
-            gamma=2.0,
-            alpha=0.25,
-            loss_weight=1.0),
+            type='UncertaintyWeightedKDLoss',
+            kd_weight=1.0,
+            tau=10,
+            reduction='mean',
+#             uncertainty_mode='variance'), 
+            uncertainty_mode='entropy'), 
         # loss_bbox=dict(type='IoULoss', loss_weight=1.0),
         loss_bbox=dict(type='GIoULoss', loss_weight=1.0),
         loss_centerness=dict(

@@ -12,6 +12,7 @@ data_preprocessor = dict(type='DetDataPreprocessor',
 
 # teacher_ckpt = 'work_dirs/fcos_r50-caffe_fpn_gn-head_2x_coco/epoch_24.pth'
 teacher_ckpt = 'work_dirs/fcos_r101-caffe_fpn_gn-head-1x_coco/exp_1/epoch_24.pth'
+
 model = dict(
     type='CrossKDFCOS',
     data_preprocessor=data_preprocessor,
@@ -55,7 +56,14 @@ model = dict(
         loss_centerness=dict(
             type='CrossEntropyLoss', use_sigmoid=True, loss_weight=1.0)),
     kd_cfg=dict(
-        loss_cls_kd=dict(type='KDQualityFocalLoss', beta=1, loss_weight=0.4),
+#         loss_cls_kd=dict(type='KDQualityFocalLoss', beta=1, loss_weight=0.4),
+        loss_cls_kd=dict(
+            type='UncertaintyWeightedKDLoss',
+            kd_weight=1.0,
+            tau=10,
+            reduction='mean',
+#             uncertainty_mode='variance'), 
+            uncertainty_mode='entropy'), 
         loss_reg_kd=dict(type='GIoULoss', loss_weight=1.0),
         reused_teacher_head_idx=2),  # Now safe to use
     test_cfg=dict(
