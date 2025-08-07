@@ -60,7 +60,7 @@ from .crosskd_retinanet import CrossKDRetinaNet
 from .crosskd_gfl import CrossKDGFL
 from .crosskd_atss import CrossKDATSS
 from .crosskd_fcos import CrossKDFCOS
-from .crosskd_fcos_uet import CrossKDFCOS_UET
+from .crosskd_fcos_mc import CrossKDFCOS_MC
 
 __all__ = [
     'ATSS', 'BaseDetector', 'SingleStageDetector', 'TwoStageDetector', 'RPN',
@@ -74,5 +74,5 @@ __all__ = [
     'MaskFormer', 'DDOD', 'Mask2Former', 'SemiBaseDetector', 'SoftTeacher',
     'RTMDet', 'Detectron2Wrapper', 'CrowdDet', 'CondInst', 'BoxInst',
     'DetectionTransformer', 'ConditionalDETR', 'DINO', 'DABDETR', 'CrossKDGFL',
-    'CrossKDSingleStageDetector', 'CrossKDRetinaNet', 'CrossKDATSS', 'CrossKDFCOS','CrossKDFCOS_UET'
+    'CrossKDSingleStageDetector', 'CrossKDRetinaNet', 'CrossKDATSS', 'CrossKDFCOS','CrossKDFCOS_MC'
 ]

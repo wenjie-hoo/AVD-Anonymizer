@@ -49,7 +49,7 @@ from .yolact_head import YOLACTHead, YOLACTProtonet
 from .yolo_head import YOLOV3Head
 from .yolof_head import YOLOFHead
 from .yolox_head import YOLOXHead
-from .fcos_teacher_head_mc import FCOSTeacherHeadMC
+from .fcos_head_mc import FCOSTeacherHeadMC
 
 __all__ = [
     'AnchorFreeHead', 'AnchorHead', 'GuidedAnchorHead', 'FeatureAdaption',
