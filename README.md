@@ -22,8 +22,8 @@ $ pip install -U openmim
 $ mim install "mmengine==0.7.3"
 $ mim install "mmcv==2.0.0rc4"
 ```
-## Traning
-### 3. Train teacher (optional)
+## Training
+### Train teacher (optional)
 ```bash
 $ python tools/train.py configs/fcos/${CONFIG_FILE} [optional arguments]
 ```
@@ -32,7 +32,7 @@ Pre‑trained checkpoints are also available [here](https://drive.google.com/fil
 $ pip install gdown
 $ gdown https://drive.google.com/uc?id=1vMo2Oflzm7nnw18rHPJqk-9gPPG4NEz6
 ```
-### 4. Distill student 
+### Distill student 
 ```bash
 $ python tools/train.py configs/crosskd+uwkd/${CONFIG_FILE} [optional arguments]
 ```
