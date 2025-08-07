@@ -1,52 +1,59 @@
-# Visual Anonymization of Autonomous Vehicle Data (AVD) using YOLO
+# Optimizing privacy-aware object detection on the PP4AV benchmark with CrossKD + Uncertainty-Weighted KD (UWKD)
 
 ## Overview
-This repository contains the code and experiments developed as part of a master's thesis focused on anonymizing visual data collected by Autonomous Driving Systems (ADS). The project addresses the growing need for privacy-preserving techniques in environments where individuals are unknowingly recorded by ADS technologies.
+[CrossKD](https://github.com/jbwang1997/CrossKD) tackles the target‑conflict problem of dense detectors by routing student feature maps through a frozen teacher head. In this project, we extend CrossKD with an Uncertainty‑Weighted KD loss (UWKD) that down‑weights ambiguous teacher logits.
 
-## Prerequisites
-- Python 3.8 or higher
-- gdown>=5.2.0
-- gitpython>=3.1.30
-- matplotlib>=3.3
-- numpy>=1.23.5
-- opencv-python>=4.1.1
-- pillow>=10.3.0
-- psutil  # system resources
-- PyYAML>=5.3.1
-- requests>=2.32.2
-- scipy>=1.4.1
-- thop>=0.1.1  
-- torch>=1.8.0 
-- torchvision>=0.9.0
-- tqdm>=4.66.3
-- ultralytics>=8.2.34 
 
-## Evaluation
-Evaluation metrics include:
+## Install
+```bash
+# 1. clone
+$ git clone https://github.com/your‑user/CrossKD‑PP4AV.git
+$ cd CrossKD
 
-- Precision, Recall, mAP
+# 2. create conda env
+$ conda create --name mmdet python=3.8 -y
+$ conda activate mmdet
 
-- Inference time per frame
+# 3. install pytorch
+$ conda install pytorch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit=11.3 -c pytorch
 
-## Baseline model and performance
-### Model Evaluation Comparison Table
+# 4. build MMDetection & ops
+$ pip install -U openmim
+$ mim install "mmengine==0.7.3"
+$ mim install "mmcv==2.0.0rc4"
+```
+## Traning
+### 3. Train teacher (optional)
+```bash
+$ python tools/train.py configs/fcos/${CONFIG_FILE} [optional arguments]
+```
+Pre‑trained checkpoints are also available [here](https://drive.google.com/file/d/1vMo2Oflzm7nnw18rHPJqk-9gPPG4NEz6/view?usp=drive_link) or
+```bash
+$ pip install gdown
+$ gdown https://drive.google.com/uc?id=1vMo2Oflzm7nnw18rHPJqk-9gPPG4NEz6
+```
+### 4. Distill student 
+```bash
+$ python tools/train.py configs/crosskd+uwkd/${CONFIG_FILE} [optional arguments]
+```
+## Evaluate
+coco style metrics
+```bash
+$ python tools/test.py configs/crosskd+uwkd/${CONFIG_FILE} ${CHECKPOINT_FILE}
+```
+mmdet benchmark
+```bash
+$ python tools/analysis_tools/benchmark.py configs/crosskd+uwkd/${CONFIG_FILE} --checkpoint ${CHECKPOINT_FILE} [optional arguments]
+```
 
-| Model          | Parameters(M) | Precision | Recall | mAP@0.5 | mAP@0.5:0.95 | Inference Time (ms) |
-| :------------- | :-----------: | :-------: | :----: | :-----: | :----------: | :-----------------: |
-| yolov5n        |     1.76      |   0.81    |  0.65  |  0.70   |     0.38     |         1.5         |
-| yolov5s        |     7.01      |   0.86    |  0.70  |  0.77   |     0.43     |         2.6         |
-| yolov5m        |     20.8      |   0.86    |  0.75  |  0.80   |     0.46     |         3.1         |
-| yolov5l        |     46.1      |   0.87    |  0.77  |  0.82   |     0.47     |         4.6         |
-| yolov5x        |     86.1      |   0.88    |  0.77  |  0.83   |     0.48     |         7.2         |
-| yolov11n       |     2.58      |   0.74    |  0.56  |  0.61   |     0.35     |         1.8         |
-| yolov11s       |     9.41      |   0.79    |  0.57  |  0.66   |     0.39     |         2.7         |
-| yolov11m       |     20.0      |   0.81    |  0.60  |  0.71   |     0.42     |         4.2         |
-| yolov11l       |     25.3      |   0.79    |  0.61  |  0.70   |     0.42     |         4.9         |
-| yolov11x       |     56.8      |   0.81    |  0.60  |  0.71   |     0.43     |         8.4         |
-| KDNet          |     38.4      |   0.60    |  0.49  |  0.49   |     0.27     |         4.0         |
-| yolov7         |     36.4      |   0.76    |  0.33  |  0.37   |     0.21     |         2.5         |
-| detr-resnet-50 |     41.3      |   0.51    |  0.70  |  0.51   |     0.22     |         0.0         |
+
+### Comparison Table
+
+
 ## Dataset
-[PP4AV](https://github.com/khaclinh/pp4av) dataset: A collection of images and videos captured in various urban environments, annotated with bounding boxes for pedestrians, cyclists, and vehicles. The dataset is designed to facilitate the training and evaluation of visual anonymization algorithms.
+[PP4AV](https://github.com/khaclinh/pp4av) dataset: A collection of images and videos captured in various urban environments, annotated with bounding boxes for pedestrian faces and license plates. 
 
-## Evaluation
+##  Acknowledgements
+
+- [MMDetection](https://github.com/open-mmlab/mmdetection) and the OpenMMLab team
+- [CrossKD](https://github.com/jbwang1997/CrossKD) authors for the original implementation
