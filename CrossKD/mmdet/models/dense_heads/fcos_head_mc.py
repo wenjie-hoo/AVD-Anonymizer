@@ -14,7 +14,7 @@ from .fcos_head import FCOSHead
 class FCOSTeacherHeadMC(FCOSHead):
     """Adds Dropout2d(p) to the classification score map."""
 
-    def __init__(self, *args, cls_dropout_p: float = 0.1, **kwargs):
+    def __init__(self, *args, cls_dropout_p: float = 0.3, **kwargs):
         super().__init__(*args, **kwargs)
         self.cls_dropout = nn.Dropout2d(cls_dropout_p)
 

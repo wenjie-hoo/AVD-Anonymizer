@@ -10,42 +10,44 @@ data_preprocessor = dict(type='DetDataPreprocessor',
                          bgr_to_rgb=False,
                          pad_size_divisor=32)
 
-# teacher_ckpt = 'work_dirs/fcos_r50-caffe_fpn_gn-head_2x_coco/epoch_24.pth'
-teacher_ckpt = 'work_dirs/fcos_r101-caffe_fpn_gn-head-1x_coco/exp_1/epoch_24.pth'
+
+teacher_ckpt = 'work_dirs/fcos_r101-caffe_fpn_gn-head-1x_coco/exp_2/epoch_24.pth'
 
 model = dict(
+#     type='CrossKDFCOS',
     type='CrossKDFCOS_MC',
-    mc_samples = 50,
+    mc_samples=50,
     data_preprocessor=data_preprocessor,
-#     teacher_config='configs/fcos/fcos_r50-caffe_fpn_gn-head_2x_coco.py',
     teacher_config='configs/fcos/fcos_r101-caffe_fpn_gn-head-1x_coco.py',
+
     teacher_ckpt=teacher_ckpt,
     backbone=dict(
         type='ResNet',
-        depth=18,  # Keep ResNet-18 for speed
+        depth=50,
         num_stages=4,
         out_indices=(0, 1, 2, 3),
         frozen_stages=1,
         norm_cfg=dict(type='BN', requires_grad=False),
         norm_eval=True,
-        style='pytorch',
+        style='caffe',
         init_cfg=dict(
             type='Pretrained',
-            checkpoint='torchvision://resnet18')),
+            checkpoint='open-mmlab://detectron/resnet50_caffe')),
     neck=dict(
         type='FPN',
-        in_channels=[64, 128, 256, 512],  # ResNet-18 channels
-        out_channels=256,  # Match teacher exactly
+        in_channels=[256, 512, 1024, 2048],
+        out_channels=256,
         start_level=0,
         add_extra_convs='on_output',
         num_outs=5,
         relu_before_extra_convs=True),
     bbox_head=dict(
-        type='FCOSTeacherHeadMC',
+        type='FCOSHead',
         num_classes=2,
-        in_channels=256, 
-        stacked_convs=4, 
+        in_channels=256,
+        stacked_convs=4,
         feat_channels=256,
+        # strides=[8, 16, 32, 64, 128],
         strides=[4, 8, 16, 32, 64],
         loss_cls=dict(
             type='FocalLoss',
@@ -53,6 +55,7 @@ model = dict(
             gamma=2.0,
             alpha=0.25,
             loss_weight=1.0),
+        # loss_bbox=dict(type='IoULoss', loss_weight=1.0),
         loss_bbox=dict(type='GIoULoss', loss_weight=2.0),
         loss_centerness=dict(
             type='CrossEntropyLoss', use_sigmoid=True, loss_weight=1.0)),
@@ -63,18 +66,20 @@ model = dict(
             kd_weight=1.0,
             tau=10,
             reduction='mean',
-#             uncertainty_mode='variance'), 
-            uncertainty_mode='entropy'), 
-        loss_reg_kd=dict(type='GIoULoss', loss_weight=1.0),
-        reused_teacher_head_idx=2),  # Now safe to use
+            uncertainty_mode='entropy'),
+        # loss_reg_kd=dict(type='IoULoss', loss_weight=0.75),
+        loss_reg_kd=dict(type='GIoULoss', loss_weight=2.0),
+        reused_teacher_head_idx=2),
     test_cfg=dict(
         nms_pre=1000,
+        # min_bbox_size=0,
         min_bbox_size=1,
         score_thr=0.05,
         nms=dict(type='nms', iou_threshold=0.5),
         max_per_img=100))
 
-# Dataset settings
+
+# dataset settings
 train_pipeline = [
     dict(
         type='LoadImageFromFile',
@@ -82,31 +87,35 @@ train_pipeline = [
     dict(type='LoadAnnotations', with_bbox=True),
     dict(
         type='RandomChoiceResize',
-        scales=[(1333, 640), (1333, 800)], 
+        scales=[(1333, 640), (1333, 800)],
         keep_ratio=True),
     dict(type='RandomFlip', prob=0.5),
     dict(type='PackDetInputs')
 ]
+train_dataloader = dict(dataset=dict(pipeline=train_pipeline),
+                        batch_size=4, 
+                        num_workers=2)
 
-train_dataloader = dict(
-    dataset=dict(pipeline=train_pipeline),
-    batch_size=4,
-    num_workers=2)
-
-# Optimizer
+# optimizer
 optim_wrapper = dict(
-    optimizer=dict(lr=0.015), 
+    optimizer=dict(lr=0.01),
     paramwise_cfg=dict(bias_lr_mult=2., bias_decay_mult=0.),
     clip_grad=dict(max_norm=35, norm_type=2))
 
-max_epochs = 24  
+max_epochs = 24
 train_cfg = dict(type='EpochBasedTrainLoop', max_epochs=max_epochs, val_interval=1)
 default_hooks = dict(checkpoint=dict(type='CheckpointHook', interval=2))
 auto_scale_lr = dict(enable=True, base_batch_size=16)
 
-# Learning rate
+# learning rate
 param_scheduler = [
-    dict(type='LinearLR', start_factor=0.1, by_epoch=False, begin=0, end=500),
+    dict(
+        type='ConstantLR',
+        factor=0.3333333333333333,
+        by_epoch=False,
+        begin=0,
+        end=500),
+#     dict(type='LinearLR', start_factor=0.1, by_epoch=False, begin=0, end=500),
     dict(
         type='MultiStepLR',
         begin=0,

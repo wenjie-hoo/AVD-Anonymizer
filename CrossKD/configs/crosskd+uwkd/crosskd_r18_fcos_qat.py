@@ -10,14 +10,11 @@ data_preprocessor = dict(type='DetDataPreprocessor',
                          bgr_to_rgb=False,
                          pad_size_divisor=32)
 
-# teacher_ckpt = 'work_dirs/fcos_r50-caffe_fpn_gn-head_2x_coco/epoch_24.pth'
 teacher_ckpt = 'work_dirs/fcos_r101-caffe_fpn_gn-head-1x_coco/exp_1/epoch_24.pth'
 
 model = dict(
-    type='CrossKDFCOS_MC',
-    mc_samples = 50,
+    type='CrossKDFCOS',
     data_preprocessor=data_preprocessor,
-#     teacher_config='configs/fcos/fcos_r50-caffe_fpn_gn-head_2x_coco.py',
     teacher_config='configs/fcos/fcos_r101-caffe_fpn_gn-head-1x_coco.py',
     teacher_ckpt=teacher_ckpt,
     backbone=dict(
@@ -41,7 +38,7 @@ model = dict(
         num_outs=5,
         relu_before_extra_convs=True),
     bbox_head=dict(
-        type='FCOSTeacherHeadMC',
+        type='FCOSHead',
         num_classes=2,
         in_channels=256, 
         stacked_convs=4, 
